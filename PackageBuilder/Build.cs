@@ -320,6 +320,8 @@ namespace VRC.PackageManagement.Automation
                 return null;
             }
 
+            Serilog.Log.Information($"Analyzing repo {owner}/{name}");
+
             // Fetch the latest release
             var latestRelease = await Client.Repository.Release.GetLatest(owner, name);
             var latestReleaseAssetUrl = latestRelease.Assets.Where(asset => asset.Name.EndsWith(".zip")).Select(asset => asset.BrowserDownloadUrl).First();
@@ -350,13 +352,14 @@ namespace VRC.PackageManagement.Automation
                     Serilog.Log.Information("Release package has no manifest. Ignoring");
                     continue; 
                 }
-                
+
                 if (manifest.Id != latestReleasePackageId)
                 {
                     Serilog.Log.Information($"Release package id different from latest repo package. Ignoring. {manifest.Id} != {latestReleasePackageId}");
                     continue;
                 }
 
+                Serilog.Log.Information($"Found {manifest.Id} ({manifest.name}) {manifest.Version}, adding to listing.");
                 manifestList.Add(manifest);
             }
 
