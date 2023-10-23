@@ -346,9 +346,14 @@ namespace VRC.PackageManagement.Automation
             foreach (string releaseUrl in releaseUrlList)
             {
                 var manifest = await HashZipAndReturnManifest(releaseUrl);
-                if(manifest.Id != latestReleasePackageId)
+                if (manifest == null) {
+                    Serilog.Log.Information("Release package has no manifest. Ignoring");
+                    continue; 
+                }
+                
+                if (manifest.Id != latestReleasePackageId)
                 {
-                    Serilog.Log.Information($"Release package id different from latest repo package. {manifest.Id} != {latestReleasePackageId}");
+                    Serilog.Log.Information($"Release package id different from latest repo package. Ignoring. {manifest.Id} != {latestReleasePackageId}");
                     continue;
                 }
 
