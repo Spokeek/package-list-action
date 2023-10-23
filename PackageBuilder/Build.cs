@@ -322,9 +322,9 @@ namespace VRC.PackageManagement.Automation
 
             // Fetch the latest release
             var latestRelease = await Client.Repository.Release.GetLatest(owner, name);
-            var latestReleaseAssetUrl = release.Assets.Where(asset => asset.Name.EndsWith(".zip")).Select(asset => asset.BrowserDownloadUrl).First();
+            var latestReleaseAssetUrl = latestRelease.Assets.Where(asset => asset.Name.EndsWith(".zip")).Select(asset => asset.BrowserDownloadUrl).First();
             var latestReleaseManifest = await HashZipAndReturnManifest(latestReleaseAssetUrl);
-            string latestReleasePackageId = manifest.Id;
+            string latestReleasePackageId = latestReleaseManifest.Id;
             
             // Go through each release
             var releases = await Client.Repository.Release.GetAll(owner, name);
