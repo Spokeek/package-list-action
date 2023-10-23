@@ -175,6 +175,7 @@ namespace VRC.PackageManagement.Automation
                         var remoteManifestObject = JsonConvert.DeserializeObject<VRCRepoList>(remoteManifestString, JsonReadOptions);
                         var packagesUrl = JsonConvert.DeserializeObject<VRCRepoList>(currentRepoListString, JsonReadOptions).GetAll()
                             .Select(package => package.Url).ToList();
+                        Serilog.Log.Information($"Adding packages urls {packagesUrl}");
                         possibleReleaseUrls.AddRange(packagesUrl);
                     }
                 }
