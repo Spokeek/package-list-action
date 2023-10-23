@@ -173,13 +173,9 @@ namespace VRC.PackageManagement.Automation
                         Serilog.Log.Information($"Analysing remote vpm repository {remoteVpmRepoUrl}");
                         var remoteManifestString = await GetAuthenticatedString(remoteVpmRepoUrl);
                         var remoteManifestObject = JsonConvert.DeserializeObject<VRCRepoList>(remoteManifestString, JsonReadOptions);
-                        foreach (var packageEntry in remoteManifestObject.packages.GetProperties()){
-                            Serilog.Log.Information($"List packages from {packageEntry}");
-                            foreach (var packageVersion in remoteManifestObject.packages[packageEntry].versions.GetProperties()){
-                                Serilog.Log.Information($"Adding version {packageVersion}");
-                                possibleReleaseUrls.Add(remoteManifestObject.packages[packageEntry].versions[packageVersion].url);
-                            }
-                        }
+                        var packagesUrl = JsonConvert.DeserializeObject<VRCRepoList>(currentRepoListString, JsonReadOptions).GetAll()
+                            .Select(package => package.Url).ToList();
+                        possibleReleaseUrls.AddRange(packagesUrl);
                     }
                 }
 
