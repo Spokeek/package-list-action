@@ -172,7 +172,7 @@ namespace VRC.PackageManagement.Automation
                     foreach (string remoteVpmRepoUrl in listSource.vpmRepos){
                         Serilog.Log.Information($"Analysing remote vpm repository {remoteVpmRepoUrl}");
                         var remoteManifestString = await GetAuthenticatedString(remoteVpmRepoUrl);
-                        var remoteManifestObject = JsonConvert.DeserializeObject(remoteManifestString, JsonReadOptions).GetAll();
+                        var remoteManifestObject = JsonConvert.DeserializeObject<VRCRepoList>(remoteManifestString, JsonReadOptions).GetAll();
                         foreach (var packageEntry in remoteManifestObject.packages.GetProperties()){
                             Serilog.Log.Information($"List packages from {packageEntry}");
                             foreach (var packageVersion in remoteManifestObject.packages[packageEntry].versions.GetProperties()){
