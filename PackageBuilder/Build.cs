@@ -167,6 +167,22 @@ namespace VRC.PackageManagement.Automation
                     }
                 }
 
+                // Add remote VPM repository packages
+                if (listSource.vpmRepos != null && listSource.vpmRepos.Count > 0){
+                    foreach (string remoteVpmRepoUrl in listSource.vpmRepos){
+                        Serilog.Log.Information($"Analysing remote vpm repository {remoteVpmRepoUrl}");
+                        var remoteManifestString = await GetAuthenticatedString(remoteVpmRepoUrl);
+                        var remoteManifestObject = JsonConvert.DeserializeObject(remoteManifestString, JsonReadOptions).GetAll();
+                        foreach (var packageEntry in remoteManifestObject.packages.GetProperties()){
+                            Serilog.Log.Information($"List packages from {packageEntry}");
+                            foreach (var packageVersion in remoteManifestObject.packages[packageEntry].versions.GetProperties()){
+                                Serilog.Log.Information($"Adding version {packageVersion}");
+                                possibleReleaseUrls.Add(remoteManifestObject.packages[packageEntry].versions[packageVersion].url);
+                            }
+                        }
+                    }
+                }
+
                 // Add each release url to the packages collection if it's not already in the listing, and its zip is valid
                 foreach (string url in possibleReleaseUrls)
                 {
