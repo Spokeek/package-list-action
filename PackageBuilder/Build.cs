@@ -349,7 +349,7 @@ namespace VRC.PackageManagement.Automation
                 if(manifest.Id != latestReleasePackageId)
                 {
                     Serilog.Log.Information($"Release package id different from latest repo package. {manifest.Id} != {latestReleasePackageId}");
-                    continue
+                    continue;
                 }
 
                 manifestList.Add(manifest);
