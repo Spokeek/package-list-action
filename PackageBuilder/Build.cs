@@ -174,6 +174,9 @@ namespace VRC.PackageManagement.Automation
                         var remoteManifestString = await GetAuthenticatedString(remoteVpmRepoUrl);
                         //Serilog.Log.Information($"Content {remoteManifestString}");
                         var repo = JsonConvert.DeserializeObject<VRCRepoList>(remoteManifestString, JsonReadOptions);
+                        Serilog.Log.Information($"w {repo.GetAll()}");
+                        Serilog.Log.Information($"w {repo.Select(package => package.Id)}");
+                        Serilog.Log.Information($"w {repo.Select(package => package.Id).ToList()}");
                         foreach(var id in repo.GetAll().Select(package => package.Id).ToList()){
                             Serilog.Log.Information($"package {id}");
                         }
