@@ -177,6 +177,7 @@ namespace VRC.PackageManagement.Automation
                         Serilog.Log.Information($"w {repo.GetAll()}");
                         Serilog.Log.Information($"w {repo.GetAll().Select(package => package.Id)}");
                         Serilog.Log.Information($"w {repo.GetAll().Select(package => package.Id).ToList()}");
+                        Serilog.Log.Information($"w {String.Join(", ", repo.GetAll().Select(package => package.Id).ToArray())}");
                         foreach(var id in repo.GetAll().Select(package => package.Id).ToList()){
                             Serilog.Log.Information($"package {id}");
                         }
