@@ -349,7 +349,7 @@ namespace VRC.PackageManagement.Automation
             {
                 var manifest = await HashZipAndReturnManifest(releaseUrl);
                 if (manifest == null) {
-                    Serilog.Log.Information("Release package has no manifest. Ignoring");
+                    Serilog.Log.Information($"Release package has no manifest. Ignoring. {releaseUrl}");
                     continue; 
                 }
 
