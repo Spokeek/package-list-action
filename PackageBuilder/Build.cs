@@ -373,7 +373,7 @@ namespace VRC.PackageManagement.Automation
 
                 if (manifest.Id != latestReleasePackageId)
                 {
-                    Serilog.Log.Information($"Release package id different from latest repo package. Ignoring. {manifest.Id} != {latestReleasePackageId}");
+                    Serilog.Log.Information($"Release ({manifest.name}} - {manifest.Version}) package id different from latest repo package. Ignoring. {manifest.Id} != {latestReleasePackageId}");
                     continue;
                 }
 
