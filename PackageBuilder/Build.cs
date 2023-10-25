@@ -322,11 +322,29 @@ namespace VRC.PackageManagement.Automation
 
             Serilog.Log.Information($"Analyzing repo {owner}/{name}");
 
-            // Fetch the latest release
+            // Fetch the latest release id
             var latestRelease = await Client.Repository.Release.GetLatest(owner, name);
+            if (latestRelease == null)
+            {
+                Serilog.Log.Information("Found no releases");
+                return null;
+            }
+
             var latestReleaseAssetUrl = latestRelease.Assets.Where(asset => asset.Name.EndsWith(".zip")).Select(asset => asset.BrowserDownloadUrl).First();
+            if (latestReleaseAssetUrl == null)
+            {
+                Serilog.Log.Information("Found no valid asset in latest release");
+                return null;
+            }
+
             var latestReleaseManifest = await HashZipAndReturnManifest(latestReleaseAssetUrl);
+            if (latestReleaseManifest == null)
+            {
+                Serilog.Log.Information("Found no valid manifest in latest release");
+                return null;
+            }
             string latestReleasePackageId = latestReleaseManifest.Id;
+
             
             // Go through each release
             var releases = await Client.Repository.Release.GetAll(owner, name);
