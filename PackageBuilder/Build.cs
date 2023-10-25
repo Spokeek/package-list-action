@@ -186,7 +186,7 @@ namespace VRC.PackageManagement.Automation
                 {
                     foreach (string ownerSlashName in listSource.githubRepos)
                     {
-                        List<VRCPackageManifest> repoManifests = await GetReleaseZipUrlsFromGitHubRepo(ownerSlashName);
+                        List<VRCPackageManifest> repoManifests = await GetReleaseManifestsFromGitHubRepo(ownerSlashName);
                         packages.AddRange(repoManifests);
                     }
                 }
@@ -301,7 +301,7 @@ namespace VRC.PackageManagement.Automation
         * We base our list on the latest package id
         * If one of the releases id is different from the latest id, we will ignore the release
         */
-        async Task<List<VRCPackageManifest>> GetReleaseZipUrlsFromGitHubRepo(string ownerSlashName)
+        async Task<List<VRCPackageManifest>> GetReleaseManifestsFromGitHubRepo(string ownerSlashName)
         {
             // Split string into owner and repo, or skip if invalid.
             var parts = ownerSlashName.Split('/');
